@@ -66,7 +66,7 @@ def yolo_conf(label_folder, extract=1, width=1280):
         coordinate.append(y)
 
     write_text = "\n".join(str(c) for c in coordinate)
-    write_file(extract, write_text)
+    write_file(unique_path((extract)), write_text)
 
     return coordinate
 
@@ -74,21 +74,41 @@ def yolo_conf(label_folder, extract=1, width=1280):
 def confer(label_folder):
     zz = []
     for i in read_text_file(label_folder, "\n"):
-        if i and float(i) > 0:
-            zz.append(float(i) * 100)
-        elif float(i) < 0:
+        i = i.split(",")[-1]
+
+        if i and float(i) == 1:
             zz.append(0)
+        elif i and float(i) < 0:
+            zz.append(500)
+        elif i:
+            zz.append(int(i))
+
     return zz
 
+def confers(label_folder):
+    zz = []
+    for i in read_text_file(label_folder, "\n"):
+        i = i.split(",")[-1]
+
+        if i and float(i) >= 0:
+            zz.append(float(i)*100)
+        elif i and float(i) < 0:
+            zz.append(0)
+        elif i:
+            zz.append(int(i))
+
+    return zz
 
 def create_yolo_graph(labels_path=""):
     sample_list = []
-    sample_list.append(yolo_conf(labels_path))
-    sample_list.append(yolo_conf(labels_path, 2, 720))
-    sample_list.append(confer(r"C:\tool\yolo_agent\yolo_agent\anomaly_score.txt"))
-    sample_list.append(confer(r"C:\tool\yolo_agent\yolo_agent\anomaly_scores.txt"))
-    
+    # sample_list.append(yolo_conf(labels_path))
+    # sample_list.append(yolo_conf(labels_path, 2, 720))
+    # sample_list.append(confer(r"C:\tool\yolo_agent\yolo_agent\1_1.txt"))
+    # sample_list.append(confer(r"C:\tool\yolo_agent\yolo_agent\2_1.txt"))
 
+    # sample_list.append(confer(r"F:\Python_program\Garbage\routedayoooooooooooooooooo\datass.txt"))
+    # sample_list.append(confers(r"C:\tool\yolo_agent\yolo_agent\anomaly_scoress.txt"))
+    # sample_list.append(confers(r"C:\tool\yolo_agent\yolo_agent\anomaly_scoresss.txt"))
     LG = LineGraph()
 
     process = [lambda x=list: LG.line_create(x) for list in sample_list]
@@ -122,4 +142,5 @@ def create_graph(data_list):
 if __name__ == "__main__":
     logger = make_logger(handler=get_log_handler(20))
 
-    create_yolo_graph(r"F:\AI_project_y\新しいフォルダー\labels")
+    # create_yolo_graph(r"F:\AI_project_y\新しいフォルダー\labels")
+    create_yolo_graph(r"F:\video\labels")

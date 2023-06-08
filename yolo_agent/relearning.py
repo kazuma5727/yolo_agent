@@ -39,7 +39,10 @@ def reannotation(file_path: str, class_range: List[str] = ["0"]) -> str:
 
     """
     lines = read_text_file(file_path, "\n")
-    if lines[1]:
+    
+    
+    
+    if  lines[1]:
         lines = [line for line in lines if line.strip() != ""]
         lines = sorted(lines, key=lambda x: float(x.split()[-1]))[::-1]
     

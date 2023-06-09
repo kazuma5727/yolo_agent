@@ -28,8 +28,10 @@ class LineGraph:
     """
 
     def __init__(self, title="", xlabel="", ylabel="") -> None:
-        self.fig = plt.figure(figsize=(100, 10), facecolor="white")
+        self.fig = plt.figure(figsize=(100, 30), facecolor="white")
         self.ax = self.fig.add_subplot(111, xlabel=xlabel, ylabel=ylabel, title=title)
+        self.ax.tick_params(axis="both", labelsize=100)
+        # self.ax.tick_params(axis='y', labelsize=15)
         logger.info(f"タイトル{title}で折れ線グラフを作ります")
 
         self.firstlinecreate = False
@@ -40,8 +42,12 @@ class LineGraph:
                 self.x_line = x_line
             else:
                 self.x_line = [e for e in range(len(line_list))]
+                labels = [int(e / 1800) for e in range(len(line_list))]
             self.firstlinecreate = True
             self.ax.plot(self.x_line, line_list, label=label)
+            
+            self.ax.set_xticks(self.x_line)
+            self.ax.set_xticklabels(labels, fontsize=100)
 
         else:
             if len(line_list) > len(self.x_line):
@@ -85,13 +91,14 @@ def confer(label_folder):
 
     return zz
 
+
 def confers(label_folder):
     zz = []
     for i in read_text_file(label_folder, "\n"):
         i = i.split(",")[-1]
 
         if i and float(i) >= 0:
-            zz.append(float(i)*100)
+            zz.append(float(i) * 100)
         elif i and float(i) < 0:
             zz.append(0)
         elif i:
@@ -99,12 +106,13 @@ def confers(label_folder):
 
     return zz
 
+
 def create_yolo_graph(labels_path=""):
     sample_list = []
     # sample_list.append(yolo_conf(labels_path))
     # sample_list.append(yolo_conf(labels_path, 2, 720))
-    # sample_list.append(confer(r"C:\tool\yolo_agent\yolo_agent\1_1.txt"))
-    # sample_list.append(confer(r"C:\tool\yolo_agent\yolo_agent\2_1.txt"))
+    sample_list.append(confer(r"C:\tool\yolo_agent\yolo_agent\1_3.txt"))
+    sample_list.append(confer(r"C:\tool\yolo_agent\yolo_agent\2_3.txt"))
 
     # sample_list.append(confer(r"F:\Python_program\Garbage\routedayoooooooooooooooooo\datass.txt"))
     # sample_list.append(confers(r"C:\tool\yolo_agent\yolo_agent\anomaly_scoress.txt"))
